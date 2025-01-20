@@ -27,7 +27,8 @@ class CounterTableScreen extends StatefulWidget {
 }
 
 class _CounterTableScreenState extends State<CounterTableScreen> {
-  final DatabaseReference dbRef = FirebaseDatabase.instance.ref("counter");
+  // final DatabaseReference dbRef = FirebaseDatabase.instance.ref("counter");
+  final DatabaseReference dbRef = FirebaseDatabase.instance.ref("counter/20-01-2025");
   Map<String, Map<String, dynamic>> counterData = {};
 
   @override
@@ -74,6 +75,7 @@ class _CounterTableScreenState extends State<CounterTableScreen> {
                 rows: counterData.entries.map((entry) {
                   final processName = entry.key;
                   final processData = entry.value;
+                  
                   return DataRow(
                     cells: [
                       DataCell(Text(processName)),
