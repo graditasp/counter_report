@@ -27,7 +27,6 @@ class CounterTableScreen extends StatefulWidget {
 }
 
 class _CounterTableScreenState extends State<CounterTableScreen> {
-  // final DatabaseReference dbRef = FirebaseDatabase.instance.ref("counter");
   final DatabaseReference dbRef = FirebaseDatabase.instance.ref("counter/20-01-2025");
   Map<String, Map<String, dynamic>> counterData = {};
 
@@ -47,6 +46,16 @@ class _CounterTableScreenState extends State<CounterTableScreen> {
         );
       }); 
     }
+  }
+
+  int calculateSum(Map<String, dynamic> processData, List<String> keys) {
+    int jamPagi = 0;
+    int jamSore = 0;
+    for (var key in keys) {
+      jamPagi += int.tryParse(processData[key]?.toString() ?? "0") ?? 0;
+      jamSore += int.tryParse(processData[key]?.toString() ?? "0") ?? 0;
+    }
+    return jamPagi & jamSore;
   }
 
   @override
@@ -75,18 +84,21 @@ class _CounterTableScreenState extends State<CounterTableScreen> {
                 rows: counterData.entries.map((entry) {
                   final processName = entry.key;
                   final processData = entry.value;
+                  final jamPagi = calculateSum(processData, ["6:30", "7:30"]); //cek
+                  final jamSore = calculateSum(processData, ["16:30", "19:30", "20:30"]); //cek
                   
                   return DataRow(
                     cells: [
                       DataCell(Text(processName)),
-                      DataCell(Text(processData["7:30"]?.toString() ?? "0")),
+                      DataCell(Text(jamPagi.toString())),
                       DataCell(Text(processData["9:30"]?.toString() ?? "0")),
                       DataCell(Text(processData["10:30"]?.toString() ?? "0")),
                       DataCell(Text(processData["11:30"]?.toString() ?? "0")),
                       DataCell(Text(processData["13:30"]?.toString() ?? "0")),
                       DataCell(Text(processData["14:30"]?.toString() ?? "0")),
                       DataCell(Text(processData["15:30"]?.toString() ?? "0")),
-                      DataCell(Text(processData["16:30"]?.toString() ?? "0")),
+                      DataCell(Text(jamSore.toString())),
+                      // DataCell(Text(processData["16:30-19:30"]?.toString() ?? "0")),
                       DataCell(Text(processData["total_count"]?.toString() ?? "0")),
                     ],
                   );
